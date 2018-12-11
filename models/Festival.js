@@ -9,18 +9,18 @@ const festivalSchema = new Schema({
   venue: String,
   overallRating: Number,
   ratingByYear: [Number],
-  soundRating: Number,
-  artRating: Number,
-  foodRating: Number,
-  venueRating: Number,
-  stageRating: Number,
-  activitiesRating: Number,
-  vibeRating: Number,
-  
+  soundRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  artRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  foodRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  venueRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  stageRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  activitiesRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  vibeRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 }, {
     timestamps: true
 });
 
-const User = mongoose.model('User', festivalSchema)
+const Festival = mongoose.model('Festival', festivalSchema)
 
 module.exports = Festival;

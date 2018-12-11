@@ -12,7 +12,6 @@ const path         = require('path');
 const session      = require('express-session');
 const passport     = require('passport');
 const cors         = require('cors');
-const SeatGeek     = require('seatgeek-js')
 
 require('./config/passport')
 
@@ -75,5 +74,8 @@ app.use('/', index);
 
 const userRoutes = require('./routes/user-routes');
 app.use('/api', userRoutes);
+
+const festivalRoutes = require('./routes/festival-routes');
+app.use('/api', festivalRoutes);
 
 module.exports = app;
