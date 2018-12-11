@@ -12,6 +12,7 @@ const path         = require('path');
 const session      = require('express-session');
 const passport     = require('passport');
 const cors         = require('cors');
+const SeatGeek     = require('seatgeek-js')
 
 require('./config/passport')
 
