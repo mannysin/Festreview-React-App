@@ -78,4 +78,7 @@ app.use('/api', userRoutes);
 const festivalRoutes = require('./routes/festival-routes');
 app.use('/api', festivalRoutes);
 
+// const reviewRoutes = require('./routes/review-routes');
+// app.use('/api', reviewRoutes);
+
 module.exports = app;
