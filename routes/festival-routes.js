@@ -1,7 +1,7 @@
 const express      = require('express');
 const router       = express.Router();
 const axios        = require('axios')
-const Review         = require('../models/User');
+const Review       = require('../models/Review');
 const Festival     = require('../models/Festival');
 
 
@@ -23,15 +23,16 @@ router.get('/festivals/:page', (req, res, next)=>{
 router.get('/festival/:id', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/get?app_key=${process.env.EF_API_KEY}&id=${req.params.id}`)
   .then((response)=>{
-    theID = response.data.id
-    Festival.findOne({idAPI: theID})
+    theTitle = response.data.title
+    // console.log("YOYOYO here I am ", theTitle);
+    Festival.findOne({title: theTitle}).populate('reviews')
     .then(festivalFromDB => {
       data = {
         oneFestival: response.data,
         fromDB: false,
-        idAPI: theID
+        title: theTitle
       }
-      console.log("YOYOYO here I am ", festivalFromDB);
+      console.log("YOYOYO here I am ", theTitle);
       if(festivalFromDB !== null) {
         
         data.oneFestival = festivalFromDB;
@@ -51,7 +52,7 @@ router.get('/festival/:id', (req, res, next)=>{
 })
 
 router.post('/festival/addFestival',  (req, res, next)=>{
-  Festival.findOne({idAPI: req.body.id})
+  Festival.findOne({title: req.body.title})
   .then(theFestival =>{
     if(theFestival !== null){
       res.json(theFestival)
@@ -67,6 +68,47 @@ router.post('/festival/addFestival',  (req, res, next)=>{
   })
   .catch((err)=>{
     res.json(err)
+  })
+})
+
+router.get('/:id/addReview', (req, res, next)=>{
+  Festival.findById(req.params.id)
+  .then((theFestival)=>{
+    res.json({theFestival: theFestival})
+  })
+  .catch((err)=>{
+    res.json(err)
+  })    
+})
+
+router.post('/:id/addReview', (req, res, next)=>{
+  const newReview = req.body;
+    // newReview.author = req.user.username;
+    newReview.test = "hm";
+  
+  Review.create({newReview})
+  .then(createdReview => {
+    // console.log(">>>>>>>>>>>>>>>>>>>>>> ", createdReview);
+    Festival.findById(req.params.id) 
+      .then(festivalFromDB => {
+        // console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
+        festivalFromDB.test.push(createdReview._id),
+        console.log("******************** ", createdReview);
+        festivalFromDB.save()
+        .then(updatedFestival => {
+          // console.log("############################# ", updatedfestival);
+          res.json(updatedFestival)
+        })
+        .catch(err => {
+          res.json(err);
+        })
+      })
+      .catch(err => {
+        res.json(err);
+      })
+  })
+  .catch(err => {
+    res.json(err);
   })
 })
 

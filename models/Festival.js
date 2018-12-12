@@ -10,6 +10,7 @@ const festivalSchema = new Schema({
   venue: String,
   overallRating: Number,
   ratingByYear: [Number],
+  reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   soundRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   artRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   foodRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
@@ -17,7 +18,8 @@ const festivalSchema = new Schema({
   stageRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   activitiesRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   vibeRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
-  comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
+  comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
+  test: [{type: Schema.Types.ObjectId, ref: 'Review'}]
 }, {
     timestamps: true
 });

@@ -12,6 +12,7 @@ const reviewSchema = new Schema({
   stageRating: Number,
   activitiesRating: Number,
   vibeRating: Number,
+  test: [],
 }, {
   timestamps: true
 });
