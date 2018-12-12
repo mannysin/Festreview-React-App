@@ -8,8 +8,8 @@ const passport = require('passport');
 
 
 router.post('/signup', (req, res, next) => {
-    const username = "req.body.username TEST";
-    const password = "req.body.password TEST";
+    const username = req.body.username;
+    const password = req.body.password;
   
 
 

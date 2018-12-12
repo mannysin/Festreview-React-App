@@ -19,7 +19,9 @@ const festivalSchema = new Schema({
   activitiesRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   vibeRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
-  test: [{type: Schema.Types.ObjectId, ref: 'Review'}]
+  test: [{type: Schema.Types.ObjectId, ref: 'Review'}],
+  test2: Array
+
 }, {
     timestamps: true
 });

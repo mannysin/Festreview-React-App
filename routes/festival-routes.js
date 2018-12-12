@@ -92,7 +92,9 @@ router.post('/:id/addReview', (req, res, next)=>{
     Festival.findById(req.params.id) 
       .then(festivalFromDB => {
         // console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
-        festivalFromDB.test.push(createdReview._id),
+        festivalFromDB.test2.push(createdReview),
+        festivalFromDB.test.push(createdReview),
+        festivalFromDB.soundRating.push(createdReview.soundRating),
         console.log("******************** ", createdReview);
         festivalFromDB.save()
         .then(updatedFestival => {

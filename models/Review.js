@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema   = mongoose.Schema;
 
 const reviewSchema = new Schema({
+  festival: [{type: Schema.Types.ObjectId, ref: 'Festival'}],
   author: String,
   overallRating: Number,
   review: String,
