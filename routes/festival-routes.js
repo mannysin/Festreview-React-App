@@ -1,7 +1,7 @@
 const express      = require('express');
 const router       = express.Router();
 const axios        = require('axios')
-const User         = require('../models/User');
+const Review         = require('../models/User');
 const Festival     = require('../models/Festival');
 
 
@@ -10,81 +10,60 @@ var eventful = require('eventful-node');
 var client = new eventful.Client(`${process.env.EF_API_KEY}`);
 
 
-
-router.get('/festivals/:page_number', (req, res, next) => {
-  let prevOffset = Number(req.params.page_number) - 1
-  let nextOffset = Number(req.params.page_number) + 1
-  let showPrev = true;
-  
-  client.searchEvents({ 
-    keywords: 'music-festival', 
-    page_number: req.params.page_number,
-    page_size: 20,
-   }, function(err, data){
-
-    
-    // console.log(data.search.first_item) 
-    // console.log(data.search.total_items) 
-    // console.log(data.search.page_number)
-    // console.log(prevOffset)  
-    // console.log(nextOffset) 
-
-
-
-    if(err){
-        return console.error(err);
-    }
-
-    if(data){
-      if(data.search.events.event[1].description === ""){
-        data.search.events.event[1].description = "yo this is the update"
-      } else{ 
-        console.log(data.search.events.event[0].title)
-        console.log(data.search.events.event[0].$.id)
-        console.log(data.search.events.event[0].description)
-        res.json(data.search.events.event)
-      }
-    }
-
-
-       
-        
-      
-      // console.log("this isnt my resjson ", + data)
-      // console.log(data.search.events.event[6])
-      // console.log('Recieved ' + data.search.first_item + ' events');
-      // console.log('Recieved ' + data.search.total_items + ' events');
-      // console.log('Recieved ' + data.search.page_size + ' pages');
-      // console.log('Recieved ' + data.search.page_count + ' counts');
-     
-      // console.log('you dummy')
-  
-    // for(var i in data.search.events){
-    //   let dataBack = data.search.events[i]
-    //   // console.log(dataBack);
-    //   console.log('HERE IS THE TITLE:' + dataBack[1].title)
-    //   if(dataBack[1].description === ""){
-    //     dataBack[1].description = "yo this is the update"
-    //   }
-    //   console.log('HERE IS THE TITLE:' + dataBack[1].description)
-    //   console.log('HERE IS THE TITLE:' + dataBack[1].start_time)
-    // }
+router.get('/festivals/:page', (req, res, next)=>{
+  axios.get(`http://api.eventful.com/json/events/search?app_key=${process.env.EF_API_KEY}&keywords=music-festival&date=all&sort_order=date&page_size=20&sort_direction=descending&page_number=${req.params.page}`)
+  .then((response)=>{
+    res.json({infoFromApi: response.data})
   })
-  // .then(data => {
-  //   console.log(data.body);
-  //   res.json(response)
-  // 
-  // }).catch(error => {
-  //   res.json(error);
-  // });
-
-});
-
+  .catch((err)=>{
+    res.json(err)
+  })
+})
 
 router.get('/festival/:id', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/get?app_key=${process.env.EF_API_KEY}&id=${req.params.id}`)
   .then((response)=>{
-    res.json({infoFromApi: response.data})
+    theID = response.data.id
+    Festival.findOne({idAPI: theID})
+    .then(festivalFromDB => {
+      data = {
+        oneFestival: response.data,
+        fromDB: false,
+        idAPI: theID
+      }
+      console.log("YOYOYO here I am ", festivalFromDB);
+      if(festivalFromDB !== null) {
+        
+        data.oneFestival = festivalFromDB;
+        data.fromDB = true;
+        console.log("YOYOYO here I am in the DB ", festivalFromDB);
+      }  
+      res.json({infoFromApi: response.data})
+
+    })
+    .catch(err => {
+      res.json(err);
+    })    
+  })
+  .catch((err)=>{
+    res.json(err)
+  })
+})
+
+router.post('/festival/addFestival',  (req, res, next)=>{
+  Festival.findOne({idAPI: req.body.id})
+  .then(theFestival =>{
+    if(theFestival !== null){
+      res.json(theFestival)
+    } else {
+      Festival.create(req.body)
+      .then(theFestival =>{
+        res.json(theFestival)
+      })
+      .catch((err)=>{
+        res.json(err)
+      })
+    }
   })
   .catch((err)=>{
     res.json(err)
