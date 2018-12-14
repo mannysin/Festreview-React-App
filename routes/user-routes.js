@@ -13,10 +13,10 @@ router.post('/signup', (req, res, next) => {
   
 
 
-    // if(password.length < 7){
-    //     res.status(400).json({ message: 'Please make your password at least 8 characters long for security purposes.' });
-    //     return;
-    // }
+    if(password.length < 7){
+        res.status(400).json({ message: 'Please make your password at least 8 characters long for security purposes.' });
+        return;
+    }
   
     User.findOne({ username }, (err, foundUser) => {
 
@@ -91,11 +91,12 @@ router.post('/logout', (req, res, next) => {
 
 
 router.get('/loggedin', (req, res, next) => {
+    console.log('hi', req.user)
     if (req.isAuthenticated()) {
         res.json(req.user);
         return;
     }
-    res.status(500).json({ message: 'Unauthorized' });
+    res.status(500).json({ message: 'Unauthorized', loggedInUser:false });
 });
 
 

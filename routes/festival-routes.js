@@ -13,7 +13,7 @@ var client = new eventful.Client(`${process.env.EF_API_KEY}`);
 router.get('/festivals/:page', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/search?app_key=${process.env.EF_API_KEY}&keywords=music-festival&date=all&sort_order=date&page_size=20&sort_direction=descending&page_number=${req.params.page}`)
   .then((response)=>{
-    res.json({infoFromApi: response.data})
+    res.json(response.data)
   })
   .catch((err)=>{
     res.json(err)
