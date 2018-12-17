@@ -34,12 +34,12 @@ router.get('/festivals/na/:page', (req, res, next)=>{
 router.get('/festival/:id', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/get?app_key=${process.env.EF_API_KEY}&id=${req.params.id}`)
   .then((response)=>{
-    console.log("hmmmmmmmmm", response.data)
+    // console.log("hmmmmmmmmm", response.data)
     theID = response.data.id
-    console.log("lvl1 YOYOYO here I am ", theID);
+    // console.log("lvl1 YOYOYO here I am ", theID);
     Festival.findOne({idAPI: theID}).populate('reviews')
     .then(festivalFromDB => {
-      console.log("the response ------------------------------- ", festivalFromDB, response.data)
+      // console.log("the response ------------------------------- ", festivalFromDB, response.data)
       data = {
         oneFestival: response.data,
         fromDB: false,
@@ -50,7 +50,7 @@ router.get('/festival/:id', (req, res, next)=>{
         
         data.oneFestival = festivalFromDB;
         data.fromDB = true;
-        console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
+        // console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
       }  
       console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
       console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
@@ -66,9 +66,10 @@ router.get('/festival/:id', (req, res, next)=>{
   })
 })
 
-router.post('/festival/addFestival',  (req, res, next)=>{
+router.post('/fest/addFestival',  (req, res, next)=>{
   Festival.findOne({title: req.body.title})
   .then(theFestival =>{
+    console.log("adding a fest to the DB", theFestival)
     if(theFestival !== null){
       res.json(theFestival)
     } else {
