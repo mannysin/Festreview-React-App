@@ -23,6 +23,7 @@ router.get('/festivals/:page', (req, res, next)=>{
 router.get('/festivals/na/:page', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/search?app_key=${process.env.EF_API_KEY}&keywords=music-festival&l=United+States&date=all&sort_order=date&page_size=10&sort_direction=descending&page_number=${req.params.page}`)
   .then((response)=>{
+    console.log(response.data);
     res.json(response.data)
   })
   .catch((err)=>{
@@ -33,22 +34,27 @@ router.get('/festivals/na/:page', (req, res, next)=>{
 router.get('/festival/:id', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/get?app_key=${process.env.EF_API_KEY}&id=${req.params.id}`)
   .then((response)=>{
-    console.log("lvl1 YOYOYO here I am ", response);
-    Festival.findOne({title: theTitle}).populate('reviews')
+    console.log("hmmmmmmmmm", response.data)
+    theID = response.data.id
+    console.log("lvl1 YOYOYO here I am ", theID);
+    Festival.findOne({idAPI: theID}).populate('reviews')
     .then(festivalFromDB => {
+      console.log("the response ------------------------------- ", festivalFromDB, response.data)
       data = {
         oneFestival: response.data,
         fromDB: false,
-        title: theTitle
+        idAPI: theID,
+        // console.log("YOYOYO here I am ", theTitle);
       }
-      // console.log("YOYOYO here I am ", theTitle);
-      if(festivalFromDB !== null) {
+      if(festivalFromDB) {
         
         data.oneFestival = festivalFromDB;
         data.fromDB = true;
-        console.log("YOYOYO here I am in the DB ", festivalFromDB);
+        console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
       }  
-      res.json({infoFromApi: response.data})
+      console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
+      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
+      res.json(data);
 
     })
     .catch(err => {
