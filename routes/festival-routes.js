@@ -40,6 +40,7 @@ router.get('/festival/:id', (req, res, next)=>{
     Festival.findOne({idAPI: theID}).populate('reviews')
     .then(festivalFromDB => {
       // console.log("the response ------------------------------- ", festivalFromDB, response.data)
+      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", req.body);
       data = {
         oneFestival: response.data,
         fromDB: false,
@@ -51,12 +52,16 @@ router.get('/festival/:id', (req, res, next)=>{
         data.oneFestival = festivalFromDB;
         data.fromDB = true;
         // console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
-      }  
-      console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
-      console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
+      }
+      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
+      // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
+      // Festival.create(req.body)
       res.json(data);
-
     })
+    // .then((createdFest)=> {
+    //   console.log("here is the created Fest!", createdFest)
+    //   res.json(createdFest)
+    // })
     .catch(err => {
       res.json(err);
     })    
