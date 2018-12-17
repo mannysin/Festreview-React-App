@@ -33,8 +33,7 @@ router.get('/festivals/na/:page', (req, res, next)=>{
 router.get('/festival/:id', (req, res, next)=>{
   axios.get(`http://api.eventful.com/json/events/get?app_key=${process.env.EF_API_KEY}&id=${req.params.id}`)
   .then((response)=>{
-    theTitle = response.data.title
-    // console.log("YOYOYO here I am ", theTitle);
+    console.log("lvl1 YOYOYO here I am ", response);
     Festival.findOne({title: theTitle}).populate('reviews')
     .then(festivalFromDB => {
       data = {
@@ -42,7 +41,7 @@ router.get('/festival/:id', (req, res, next)=>{
         fromDB: false,
         title: theTitle
       }
-      console.log("YOYOYO here I am ", theTitle);
+      // console.log("YOYOYO here I am ", theTitle);
       if(festivalFromDB !== null) {
         
         data.oneFestival = festivalFromDB;
