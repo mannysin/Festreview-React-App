@@ -52,6 +52,7 @@ router.get('/festival/:id', (req, res, next)=>{
         res.json(data)
         console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
       }
+
       if(!festivalFromDB){
         Festival.create({
           idAPI: theID,
@@ -64,7 +65,7 @@ router.get('/festival/:id', (req, res, next)=>{
           venue_address: response.data.venue_address,
         })
       }
-      // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
+      console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
       // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
       console.log("asdfasdfasdf", data)
       res.json(data);
