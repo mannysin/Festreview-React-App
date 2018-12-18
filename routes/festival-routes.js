@@ -44,23 +44,25 @@ router.get('/festival/:id', (req, res, next)=>{
       data = {
         oneFestival: response.data,
         fromDB: false,
-        idAPI: theID,
-        title: response.data.title,
-        description: response.data.description,
-        start: response.data.start_time,
-        city: response.data.city,
-        country: response.data.country,
-        venueName: response.data.venue_name,
-        venueAddress: response.data.venue_address,
       }
       if(festivalFromDB) {
         
         data.oneFestival = festivalFromDB;
         data.fromDB = true;
-        // console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
+        res.json(data)
+        console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
       }
       if(!festivalFromDB){
-        Festival.create(data)
+        Festival.create({
+          idAPI: theID,
+          title: response.data.title,
+          description: response.data.description,
+          start_time: response.data.start_time,
+          city: response.data.city,
+          country: response.data.country,
+          venue_name: response.data.venue_name,
+          venue_address: response.data.venue_address,
+        })
       }
       // console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
       // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
