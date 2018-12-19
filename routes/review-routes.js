@@ -8,23 +8,23 @@ router.post('/:id/addReview', (req, res, next)=>{
     // if(!req.user) {
     //     res.status(500).json("error", "You must be logged in to post! Not a member? Sign up!");
     //   }
-  const newReview = req.body;
+//   const newReview = req.body;
     // newReview.author = req.user.username;
-    newReview.test = "hm";
-  
-  Review.create({newReview})
+    // newReview.test.push("testy");
+    console.log("WTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTF &*&*&*&**&*&*&&*&*&*&*&*", req.body);
+  Review.create(req.body)
   .then(createdReview => {
-    console.log(">>>>>>>>>>>>>>>>>>>>>> ", createdReview);
-    Festival.findById(req.params.id) 
+    console.log(">>>    >>>>>>    >>>>>    >>>>     >>>> ", createdReview);
+    Festival.findOne({idAPI: req.params.id}) 
       .then(festivalFromDB => {
         console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
-        festivalFromDB.reviews.push(createdReview),
+        festivalFromDB.reviews.push(createdReview._id),
         // festivalFromDB.test.push(createdReview),
         // festivalFromDB.soundRating.push(createdReview.soundRating),
-        console.log("******************** ", festivalFromDB);
+        // console.log("******************** ", festivalFromDB);
         festivalFromDB.save()
         .then(updatedFestival => {
-            console.log("############################# ", festivalFromDB);
+            console.log("############################# ", updatedFestival);
             res.json(updatedFestival)
         })
         .catch(err => {
