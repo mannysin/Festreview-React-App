@@ -49,8 +49,8 @@ router.get('/festival/:id', (req, res, next)=>{
         
         data.oneFestival = festivalFromDB;
         data.fromDB = true;
+        // console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
         res.json(data)
-        console.log("YOYOYO here I am in the DB ................................................ ", festivalFromDB);
         return;
       }
 

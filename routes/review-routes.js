@@ -12,20 +12,45 @@ router.post('/:id/addReview', (req, res, next)=>{
     // newReview.author = req.user.username;
     // newReview.test.push("testy");
     console.log("WTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTF &*&*&*&**&*&*&&*&*&*&*&*", req.body);
-  Review.create(req.body)
+    Festival.findOne({idAPI: req.params.id}) 
+    .then(festivalFromDB => {
+  console.log('asdfasdfasdfasdfasdfasdfasdfasdf', festivalFromDB)
+  
+    Review.create(req.body)
   .then(createdReview => {
     console.log(">>>    >>>>>>    >>>>>    >>>>     >>>> ", createdReview);
-    Festival.findOne({idAPI: req.params.id}) 
-      .then(festivalFromDB => {
-        console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
+    
+        // console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
         festivalFromDB.reviews.push(createdReview._id),
         // festivalFromDB.test.push(createdReview),
         // festivalFromDB.soundRating.push(createdReview.soundRating),
         // console.log("******************** ", festivalFromDB);
         festivalFromDB.save()
+        // console.log("<>>><><>><><>><><>><<>><<><><<><>><<>><><", req.user)
         .then(updatedFestival => {
-            console.log("############################# ", updatedFestival);
-            res.json(updatedFestival)
+            console.log("ytrdfghjkuytrdcvbhjuytrdfcvbhjuytredfghytredfvbghuytredfcvbghytredcfvghuytrdcvghi98765435678765434567876543wsdfghjytrfdcvbhjuytredcvgbhytrdcvhjui876543e5678976543wsdfghjiuytredcvbjo9876543werthjnbvcdse56789876543ewrtghbvcdser567543ertghbvdserty987654efgbvcdser4567");
+            createdReview.set({festival: updatedFestival._id})
+            // createdReview.set({author: theUser._id})
+            createdReview.save()
+            .then(updatedReview => {
+                console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ", updatedReview);
+                // console.log("############################# ", updatedFestival);
+                // res.json(updatedFestival);
+                
+                updatedReview.set({author: req.user._id})
+                updatedReview.save()
+                .then((updatedReviewUser) => {
+                    console.log("%%%%%%%%%%%%%%%%%%%%%%%%%%%%% ", updatedReviewUser);
+                    console.log("############################# ", updatedFestival);
+                    res.json(updatedFestival);
+                })
+                .catch(err => {
+                    res.json(err);
+                })
+            })
+            .catch(err => {
+                res.json(err);
+            })
         })
         .catch(err => {
           res.json(err);
