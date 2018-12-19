@@ -13,6 +13,7 @@ const festivalSchema = new Schema({
   venue_address: String,
   overallRating: Number,
   ratingByYear: [Number],
+  fromDB: false,
   reviews: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   soundRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],
   artRating: [{type: Schema.Types.ObjectId, ref: 'Review'}],

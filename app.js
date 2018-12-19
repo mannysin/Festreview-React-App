@@ -78,8 +78,12 @@ app.use('/api', userRoutes);
 const festivalRoutes = require('./routes/festival-routes');
 app.use('/api', festivalRoutes);
 
-// const reviewRoutes = require('./routes/review-routes');
-// app.use('/api', reviewRoutes);
+const reviewRoutes = require('./routes/review-routes');
+app.use('/api', reviewRoutes);
+
+const commentRoutes = require('./routes/comment-routes');
+app.use('/api', commentRoutes);
+
 
 app.use((req, res, next) => {
   res.sendFile(__dirname + "/public/index.html");

@@ -3,7 +3,7 @@ const Schema   = mongoose.Schema;
 
 const reviewSchema = new Schema({
   festival: [{type: Schema.Types.ObjectId, ref: 'Festival'}],
-  author: String,
+  author: {type: Schema.Types.ObjectId, ref: 'User'},
   overallRating: Number,
   review: String,
   soundRating: Number,
@@ -14,6 +14,7 @@ const reviewSchema = new Schema({
   activitiesRating: Number,
   vibeRating: Number,
   test: [],
+  comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 }, {
   timestamps: true
 });
