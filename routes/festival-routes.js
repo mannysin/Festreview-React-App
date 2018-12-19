@@ -69,7 +69,7 @@ router.get('/festival/:id', (req, res, next)=>{
       }
       console.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< here I AM in the API", response.data)
       // console.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ", data);
-      console.log("asdfasdfasdf", data)
+      console.log("asdfasdfasdfhfchgfhgdmgfgfmhgfdmhfdmjhdjmgdjymhmyfhfhmfmhdrmh''''''''''''''''''''''''''''''''''''''", data)
     })
     .catch(err => {
       res.json(err);

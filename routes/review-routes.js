@@ -2,26 +2,30 @@ const express    = require('express');
 const router     = express.Router();
 const Review     = require('../models/Review');
 const User       = require('../models/User');
+const Festival   = require('../models/Festival')
 
 router.post('/:id/addReview', (req, res, next)=>{
+    // if(!req.user) {
+    //     res.status(500).json("error", "You must be logged in to post! Not a member? Sign up!");
+    //   }
   const newReview = req.body;
     // newReview.author = req.user.username;
     newReview.test = "hm";
   
   Review.create({newReview})
   .then(createdReview => {
-    // console.log(">>>>>>>>>>>>>>>>>>>>>> ", createdReview);
+    console.log(">>>>>>>>>>>>>>>>>>>>>> ", createdReview);
     Festival.findById(req.params.id) 
       .then(festivalFromDB => {
-        // console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
-        festivalFromDB.test2.push(createdReview),
-        festivalFromDB.test.push(createdReview),
-        festivalFromDB.soundRating.push(createdReview.soundRating),
+        console.log("festival prior to pushing review ^^^^^^^^^^^^^^^^^ ", festivalFromDB);
+        festivalFromDB.reviews.push(createdReview),
+        // festivalFromDB.test.push(createdReview),
+        // festivalFromDB.soundRating.push(createdReview.soundRating),
         console.log("******************** ", festivalFromDB);
         festivalFromDB.save()
         .then(updatedFestival => {
-          // console.log("############################# ", updatedfestival);
-          res.json(updatedFestival)
+            console.log("############################# ", festivalFromDB);
+            res.json(updatedFestival)
         })
         .catch(err => {
           res.json(err);

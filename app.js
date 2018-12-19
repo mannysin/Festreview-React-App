@@ -64,10 +64,19 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use((req, res, next)=>{ 
+  if(req.user){
+    res.locals.theUser = req.user;
+  }
+  next();
+  })
+
 app.use(cors({
   credentials: true,
   origin: ['http://localhost:3000', 'https://festreview.herokuapp.com/']
 }));
+
+
 
 const index = require('./routes/index');
 app.use('/', index);

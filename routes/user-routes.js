@@ -36,10 +36,10 @@ router.post('/signup', (req, res, next) => {
         const aNewUser = new User({
             username: username,
             password: hashPass,
-            firstName: "",
-            lastName: "",
-            avatar: "",
-            bio: "",
+            firstName: "Fest",
+            lastName: "Goer",
+            avatar: "https://www.edgehill.ac.uk/health/files/2017/12/blank-profile.png",
+            bio: "Avid fest goer ready to provide honest and concise reviews!",
         });
   
         aNewUser.save(err => {
@@ -98,6 +98,39 @@ router.get('/loggedin', (req, res, next) => {
     }
     res.status(500).json({ message: 'Unauthorized', loggedInUser:false });
 });
+
+router.get('/profile/:_id', (req, res, next)=>{
+    User.findById(req.params._id).populate('reviews').populate('comments')
+    .then(userFromDB => {
+        console.log('what the heck', userFromDB)
+      res.json(userFromDB);
+    })
+    .catch(err => {
+        res.status(500).json({ message: 'Unauthorized', loggedInUser:false });
+    })
+  })
+  
+  router.get('/profile/:id/edit-profile', (req, res, next)=>{
+    User.findById(req.user.id)
+    .then(userFromDB => {
+      res.render('users/edit-profile', {theUser: userFromDB});
+    })
+    .catch(err => {
+      res.json(err);
+    })
+  })
+  
+  router.post('/:id/update', (req, res, next)=>{
+    const changes = req.body;
+  
+    User.findByIdAndUpdate(req.params.id, changes)
+    .then((response)=> {
+      res.json(response);
+    })
+    .catch((err)=>{
+        res.json(err)
+    })
+  });
 
 
 
