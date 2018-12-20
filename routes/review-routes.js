@@ -48,7 +48,7 @@ router.get('/reviews/:ID/edit', (req, res, next)=>{
     .then((theReview)=>{
             if(!req.user._id.equals(theReview.author)) {
                 req.flash("error", "You can only edit your own posts.");
-                res.redirect("/reviews");
+                res.json("/reviews");
             }
         res.render('reviews/edit', {theReview: theReview})    
     })
@@ -59,8 +59,8 @@ router.get('/reviews/:ID/edit', (req, res, next)=>{
 
 router.post('/reviews/:ID', (req, res, next)=>{
     if(!req.user.ID) {
-        req.flash("error", "You must be the author to edit a review!");
-        res.redirect("/reviews");
+        // req.flash("error", "You must be the author to edit a review!");
+        res.json("/reviews");
         return
     }
     Review.findByIdAndUpdate(req.params.ID, {
@@ -69,10 +69,10 @@ router.post('/reviews/:ID', (req, res, next)=>{
         comment: req.body.comment
     })
     .then(()=>{
-        res.redirect('/reviews');
+        res.json('/reviews');
     })
     .catch((err)=>{
-        next(err);
+        res.json(err);
     })
 });
 
@@ -80,13 +80,13 @@ router.post('/reviews/:ID/delete', (req, res, next)=>{
     Review.findById(req.params.ID).populate('author')
     .then((theReview)=>{
         if(!req.user._id.equals(theReview.author)) {
-            req.flash("error", "You can only delete your own posts!");
+            // req.flash("error", "You can only delete your own posts!");
             res.redirect("/reviews");
             return
         }
     Review.findByIdAndRemove(req.params.ID).populate('author')
     .then((x)=>{
-        res.redirect('/reviews')
+        res.json(x)
         })   
     })
     .catch((err)=>{

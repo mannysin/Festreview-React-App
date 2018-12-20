@@ -15,9 +15,9 @@ router.get('/:id/comments/new', (req, res, next) => {
 });
 
 router.post('/:id/comments/create', (req, res, next)=>{
-  if(!req.user) {
-      req.flash("error", "You must be logged in to post! Not a member? Sign up!");
-  }
+//   if(!req.user) {
+//       req.flash("error", "You must be logged in to post! Not a member? Sign up!");
+//   }
   const newComment = req.body;
   newComment.author = req.user._id;
   newComment.review = req.params.id;
