@@ -16,8 +16,6 @@ const festivalSchema = new Schema({
   fromDB: false,
   reviews: [],
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}],
-  test2: Array
-
 }, {
     timestamps: true
 });

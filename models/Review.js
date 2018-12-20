@@ -13,6 +13,7 @@ const reviewSchema = new Schema({
   stageRating: String,
   activitiesRating: String,
   vibeRating: String,
+  idAPI: String,
   comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}]
 }, {
   timestamps: true
