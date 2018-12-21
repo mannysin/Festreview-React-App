@@ -123,10 +123,18 @@ router.get('/profile/:_id', (req, res, next)=>{
   
   router.post('/:_id/update', (req, res, next)=>{
     const changes = req.body;
-  
+    console.log ('making edits', req.params)
     User.findByIdAndUpdate(req.params._id, changes)
-    .then((response)=> {
-      res.json(response);
+    .then((response)=>{
+        if(response === null){
+            res.json({message: 'sorry we could not find this task'})
+            return;
+        }
+
+        res.json([{message: 'this task has been successfully updated'},
+        response ])
+    
+
     })
     .catch((err)=>{
         res.json(err)

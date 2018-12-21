@@ -6,7 +6,7 @@ const User       = require('../models/User');
 
 router.post('/:id/addReview', (req, res, next)=>{
   const newReview = req.body;
-    // newReview.author = req.user.username;
+    newReview.author = req.user.username;
   console.log('this is it', req.body, req.params, req.user)
   Review.create(newReview).then(createdReview => {
      console.log(">>>>>>>>>>>>>>>>>>>>>>???? ", createdReview);
@@ -16,6 +16,11 @@ router.post('/:id/addReview', (req, res, next)=>{
         console.log("******************** ", festivalFromDB);
         festivalFromDB.save()
         .then(updatedFestival => {
+            User.findByIdAndUpdate(req.user._id, {$push: {reviews: createdReview._id}})
+            .then(updatedUser => {
+                console.log("the updated user info with review added to user reviews --------- ", updatedUser);
+                res.redirect('/reviews');
+            })
           // console.log("############################# ", updatedfestival);
           res.json(updatedFestival)
         })
