@@ -20,9 +20,9 @@ router.post('/:id/addReview', (req, res, next)=>{
             .then(updatedUser => {
                 console.log("the updated user info with review added to user reviews --------- ", updatedUser);
                 res.redirect('/reviews');
+                console.log("############################# ", updatedfestival);
+                res.json(updatedUser)
             })
-          // console.log("############################# ", updatedfestival);
-          res.json(updatedFestival)
         })
         .catch(err => {
           res.json(err);
@@ -84,6 +84,7 @@ router.post('/reviews/:ID', (req, res, next)=>{
 });
 
 router.post('/reviews/:ID/delete', (req, res, next)=>{
+    console.log(req.params)
     Review.findById(req.params.ID).populate('author')
     .then((theReview)=>{
         if(!req.user._id.equals(theReview.author)) {
@@ -94,12 +95,12 @@ router.post('/reviews/:ID/delete', (req, res, next)=>{
     Review.findByIdAndRemove(req.params.ID).populate('author')
     .then((deletedReview)=>{
         if(deletedReview === null){
-            res.json({message: 'sorry this task could not be found'})
+            res.json({message: 'sorry this review could not be found'})
             return;
         } 
 
         res.json([
-            {message: 'task succesfully deleted'},
+            {message: 'Review successfully deleted!'},
             deletedReview
         ])
     })
