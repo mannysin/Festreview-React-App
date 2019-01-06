@@ -86,15 +86,17 @@ router.post('/reviews/:ID', (req, res, next)=>{
 });
 
 router.post('/reviews/:ID/delete', (req, res, next)=>{
-    Review.findById(req.params.ID).populate('author')
-    .then((theReview)=>{
-        if(!req.user._id.equals(theReview.author)) {
-            console.log('NOT DELETED', theReview, this.state)
-            res.json({message: 'You can only delete your own posts!'})
-            return
-        }
+    // Review.findById(req.params.ID).populate('author')
+    // .then((theReview)=>{
+    //     if(!req.user._id.equals(theReview.author)) {
+    //         console.log('NOT DELETED', theReview, this.state)
+    //         res.json({message: 'You can only delete your own posts!'})
+    //         return
+    //     }
     Review.findByIdAndRemove(req.params.ID).populate('author')
     .then((deletedReview)=>{
+
+        console.log('yoyoyoyoyo' , req.params.ID)
         if(deletedReview === null){
             res.json({message: 'sorry this review could not be found'})
             return;
@@ -105,16 +107,16 @@ router.post('/reviews/:ID/delete', (req, res, next)=>{
             deletedReview
         ])
     })
-    .catch((err)=>{
-        next(err);
-    })
+    // .catch((err)=>{
+    //     next(err);
+    // })
 
 
     
     .catch((err)=>{
         next(err);
     })
-    })
+    // })
   });
 
 
