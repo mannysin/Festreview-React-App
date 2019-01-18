@@ -52,7 +52,7 @@ router.get('/reviews/:ID', (req, res, next)=>{
 });
 
 router.get('/reviews/:ID/edit', (req, res, next)=>{
-    console.log('reviews ID', req.params.ID)
+    // console.log('reviews ID', req.params.ID)
     Review.findById(req.params.ID)
     .then((theReview)=>{
             if(!req.user._id.equals(theReview.author)) {
@@ -85,7 +85,7 @@ router.post('/reviews/:ID', (req, res, next)=>{
     })
 });
 
-router.post('/reviews/:ID/delete', (req, res, next)=>{
+router.post('/reviews/:_id/delete', (req, res, next)=>{
     // Review.findById(req.params.ID).populate('author')
     // .then((theReview)=>{
     //     if(!req.user._id.equals(theReview.author)) {
@@ -93,10 +93,10 @@ router.post('/reviews/:ID/delete', (req, res, next)=>{
     //         res.json({message: 'You can only delete your own posts!'})
     //         return
     //     }
-    Review.findByIdAndRemove(req.params.ID).populate('author')
+    Review.findByIdAndRemove(req.params._id).populate('author')
     .then((deletedReview)=>{
 
-        console.log('yoyoyoyoyo' , req.params.ID)
+        console.log('yoyoyoyoyo' , req.params._id)
         if(deletedReview === null){
             res.json({message: 'sorry this review could not be found'})
             return;
